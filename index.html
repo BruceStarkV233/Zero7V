@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exhibit — Photography Gallery</title>
+  <meta name="description" content="A minimalist photography portfolio gallery template." />
+
+  <!--
+Tooplate 2160 Exhibit Studio
+https://www.tooplate.com/view/2160-exhibit-studio
+Free HTML CSS Template
+-->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tooplate-exhibit-style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav class="site-nav" role="navigation" aria-label="Main">
+
+    <div class="nav__bar">
+
+      <!-- ↓ EDIT: Replace with your name or studio name -->
+      <a href="index.html" class="nav__wordmark">Exhibit <span>/ Studio</span></a>
+
+      <!-- ↓ EDIT: Desktop links (visible ≥680px) -->
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link--active">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <!-- Hamburger — visible on mobile only, controlled by JS -->
+      <button
+        class="nav__hamburger"
+        id="js-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="js-mobile-menu"
+      >
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+      </button>
+
+    </div><!-- /nav__bar -->
+
+    <!-- ↓ EDIT: Mobile menu links (visible <680px, toggled by hamburger) -->
+    <ul class="nav__mobile-menu" id="js-mobile-menu" aria-hidden="true">
+      <li><a href="index.html" class="nav__link--active">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════════ -->
+  <header class="site-hero">
+
+    <!-- ↓ EDIT: Your gallery category / series name -->
+    <p class="hero__tag">Photography · 2025</p>
+
+    <!-- ↓ EDIT: Your gallery headline -->
+    <h1 class="hero__title">
+      Light &amp;<br><strong>Shadow</strong>
+    </h1>
+
+    <div class="hero__meta">
+      <!-- ↓ EDIT: Update the photo count to match your gallery -->
+      <span class="hero__count" id="js-photo-count">24 Photographs</span>
+      <div class="hero__rule" aria-hidden="true"></div>
+      <!-- ↓ EDIT: A one-line description of your gallery series -->
+      <p class="hero__desc">A study of contrast — moments suspended between darkness and the searching, persistent light.</p>
+    </div>
+
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FILTER BAR  (optional — delete this section if not needed)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="gallery-filter-wrap">
+    <div class="gallery-filter" role="toolbar" aria-label="Filter gallery">
+
+      <!-- ↓ EDIT: Add or remove filter buttons to match your categories.
+                The "All" button shows all items; the others filter by
+                the data-filter attribute on each .gallery__item below. -->
+      <button class="filter__btn is-active" data-filter="all">All</button>
+      <button class="filter__btn" data-filter="portrait">Portrait</button>
+      <button class="filter__btn" data-filter="landscape">Landscape</button>
+      <button class="filter__btn" data-filter="urban">Urban</button>
+      <button class="filter__btn" data-filter="nature">Nature</button>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MASONRY GALLERY
+       ─────────────────────────────────────────────────────────────
+       HOW TO ADD PHOTOS:
+       1. Copy one <div class="gallery__item"> block below.
+       2. Replace the src="..." with your image path.
+       3. Replace data-full="..." with a high-res path for the lightbox.
+       4. Update data-title and data-meta to your caption text.
+       5. Set data-category to one of your filter names (e.g. "portrait").
+       ─────────────────────────────────────────────────────────────
+       NOTE: The CSS column masonry needs images of VARYING heights
+       for the best visual result. Mix portrait & landscape shots.
+       ═══════════════════════════════════════════════════════════════ -->
+  <main class="gallery" id="js-gallery" aria-label="Photo gallery">
+
+
+    <!-- ─── PHOTO 1 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-01.jpg"
+         data-title="Golden Hour"
+         data-meta="Tuscany, Italy · 2024">
+
+      <!-- ↓ EDIT: Replace src with your thumbnail image -->
+      <img
+        src="images/thumb-exhibit-01.jpg"
+        width="600"
+        height="900"
+        alt="A portrait captured in golden hour light"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Golden Hour</span>
+        <span class="gallery__caption-meta">Tuscany, Italy · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 1 -->
+
+
+    <!-- ─── PHOTO 2 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-02.jpg"
+         data-title="Coastal Mist"
+         data-meta="Big Sur, CA · 2023">
+
+      <img
+        src="images/thumb-exhibit-02.jpg"
+        width="600"
+        height="400"
+        alt="Coastal mist over a rugged shoreline"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Coastal Mist</span>
+        <span class="gallery__caption-meta">Big Sur, CA · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 2 -->
+
+
+    <!-- ─── PHOTO 3 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-03.jpg"
+         data-title="Steel & Glass"
+         data-meta="New York, USA · 2024">
+
+      <img
+        src="images/thumb-exhibit-03.jpg"
+        width="600"
+        height="800"
+        alt="Urban architecture reflecting steel and glass"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Steel &amp; Glass</span>
+        <span class="gallery__caption-meta">New York, USA · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 3 -->
+
+
+    <!-- ─── PHOTO 4 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-04.jpg"
+         data-title="Forest Floor"
+         data-meta="Pacific Northwest · 2023">
+
+      <img
+        src="images/thumb-exhibit-04.jpg"
+        width="600"
+        height="400"
+        alt="Sunlight filtering through a dense forest floor"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Forest Floor</span>
+        <span class="gallery__caption-meta">Pacific Northwest · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 4 -->
+
+
+    <!-- ─── PHOTO 5 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-05.jpg"
+         data-title="Sunday Window"
+         data-meta="Amsterdam · 2024">
+
+      <img
+        src="images/thumb-exhibit-05.jpg"
+        width="600"
+        height="900"
+        alt="A quiet portrait by a Sunday morning window"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Sunday Window</span>
+        <span class="gallery__caption-meta">Amsterdam · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 5 -->
+
+
+    <!-- ─── PHOTO 6 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-06.jpg"
+         data-title="Salt Flats at Dusk"
+         data-meta="Bonneville, Utah · 2023">
+
+      <img
+        src="images/thumb-exhibit-06.jpg"
+        width="600"
+        height="360"
+        alt="Salt flats stretching to the horizon at dusk"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Salt Flats at Dusk</span>
+        <span class="gallery__caption-meta">Bonneville, Utah · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 6 -->
+
+
+    <!-- ─── PHOTO 7 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-07.jpg"
+         data-title="Night Market"
+         data-meta="Bangkok, Thailand · 2024">
+
+      <img
+        src="images/thumb-exhibit-07.jpg"
+        width="600"
+        height="600"
+        alt="Colorful stalls at a night market in Bangkok"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Night Market</span>
+        <span class="gallery__caption-meta">Bangkok, Thailand · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 7 -->
+
+
+    <!-- ─── PHOTO 8 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-08.jpg"
+         data-title="Monsoon Season"
+         data-meta="Kerala, India · 2023">
+
+      <img
+        src="images/thumb-exhibit-08.jpg"
+        width="600"
+        height="900"
+        alt="Heavy rain falling on lush green leaves"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Monsoon Season</span>
+        <span class="gallery__caption-meta">Kerala, India · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 8 -->
+
+
+    <!-- ─── PHOTO 9 ───────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-09.jpg"
+         data-title="The Weaver"
+         data-meta="Oaxaca, Mexico · 2024">
+
+      <img
+        src="images/thumb-exhibit-09.jpg"
+        width="600"
+        height="750"
+        alt="A traditional weaver at a handloom"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">The Weaver</span>
+        <span class="gallery__caption-meta">Oaxaca, Mexico · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 9 -->
+
+
+    <!-- ─── PHOTO 10 ──────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-10.jpg"
+         data-title="Midnight Alpine"
+         data-meta="Zermatt, Switzerland · 2023">
+
+      <img
+        src="images/thumb-exhibit-10.jpg"
+        width="600"
+        height="400"
+        alt="The Matterhorn under a midnight sky"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Midnight Alpine</span>
+        <span class="gallery__caption-meta">Zermatt, Switzerland · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 10 -->
+
+
+    <!-- ─── PHOTO 11 ──────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-11.jpg"
+         data-title="Pillar Light"
+         data-meta="Berlin, Germany · 2024">
+
+      <img
+        src="images/thumb-exhibit-11.jpg"
+        width="600"
+        height="800"
+        alt="A single beam of light cutting through a dark pillar"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Pillar Light</span>
+        <span class="gallery__caption-meta">Berlin, Germany · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 11 -->
+
+
+    <!-- ─── PHOTO 12 ──────────────────────────────────────────── -->
+    <div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-12.jpg"
+         data-title="Tide Pool"
+         data-meta="Galicia, Spain · 2024">
+
+      <img
+        src="images/thumb-exhibit-12.jpg"
+        width="600"
+        height="400"
+        alt="Abstract patterns in a coastal tide pool"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">Tide Pool</span>
+        <span class="gallery__caption-meta">Galicia, Spain · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><!-- /PHOTO 12 -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ↑  PASTE NEW PHOTOS ABOVE THIS LINE
+         Copy any .gallery__item block above and change:
+           src="..."              → your thumbnail image path
+           data-full="..."        → your high-res image path
+           data-title="..."       → your photo title
+           data-meta="..."        → location / year
+           data-category="..."    → portfolio category (for filter)
+         ═══════════════════════════════════════════════════════════ -->
+
+
+  </main><!-- /GALLERY -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       LIGHTBOX  —  "Lightroom Mode"
+       This element is controlled by JavaScript below.
+       You do not need to edit this HTML.
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="lightbox" id="js-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+
+    <div class="lightbox__bar">
+      <span class="lightbox__counter" id="js-lb-counter" aria-live="polite"></span>
+      <button class="lightbox__close" id="js-lb-close" aria-label="Close photo viewer">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="lightbox__stage">
+
+      <button class="lightbox__nav lightbox__nav--prev" id="js-lb-prev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <!-- ↓ The <img> src is swapped by JS — do not edit src here -->
+      <img src="" alt="" class="lightbox__image" id="js-lb-image" />
+
+      <button class="lightbox__nav lightbox__nav--next" id="js-lb-next" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="lightbox__caption">
+      <p class="lightbox__caption-title" id="js-lb-title"></p>
+      <p class="lightbox__caption-meta"  id="js-lb-meta"></p>
+    </div>
+
+  </div><!-- /LIGHTBOX -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+
+    <div>
+      <!-- ↓ EDIT: Replace with your name / studio -->
+      <p class="footer__brand">Exhibit Studio</p>
+      <p class="footer__credit">
+        Free CSS template by <a href="https://www.tooplate.com/view/2160-exhibit-studio" target="_blank" rel="nofollow">Tooplate</a>.<br>
+        Photos via <a href="https://picsum.photos" target="_blank" rel="noopener">Lorem Picsum</a>. Free for personal &amp; commercial use.
+      </p>
+    </div>
+
+    <!-- ↓ EDIT: Update links to match your site pages -->
+    <ul class="footer__nav">
+      <li><a href="index.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT  —  Lightroom Mode + Filter
+       You do not need to edit this block.
+       ═══════════════════════════════════════════════════════════════ -->
+  <script src="tooplate-exhibit-script.js"></script>
+
+</body>
+</html>
