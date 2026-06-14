@@ -4,14 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- 🟥 网站标题（改这里） -->
   <title>ZEROV — UE / Digital Twin Portfolio</title>
-
-  <meta name="description" content="UE / GIS / Digital Twin / 3D Portfolio" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="tooplate-exhibit-style.css" />
 </head>
@@ -20,112 +13,85 @@
 
 <!-- ================= NAV ================= -->
 <nav class="site-nav">
-
-  <!-- 🟥 左上角名字 -->
   <a href="index.html" class="nav__wordmark">
     ZEROV <span>/ Portfolio</span>
   </a>
 
   <ul class="nav__links">
-    <li><a href="index.html" class="nav__link--active">Gallery</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#" class="nav__link--active">Gallery</a></li>
   </ul>
-
 </nav>
 
 <!-- ================= HERO ================= -->
 <header class="site-hero">
-
-  <!-- 🟥 主标题 -->
   <h1 class="hero__title">
-    UE &<br><strong>Digital Twin</strong>
+    UE &<br><strong>Portfolio</strong>
   </h1>
 
-  <!-- 🟨 副标题 -->
   <p class="hero__desc">
-    Unreal Engine · GIS · 3D Visualization · Simulation Systems
+    Unreal Engine · Digital Twin · GIS · 3D Visualization
   </p>
-
 </header>
 
-<!-- ================= FILTER ================= -->
+<!-- ================= FILTER（保留结构，后续可扩展） ================= -->
 <div class="gallery-filter-wrap">
   <div class="gallery-filter">
-
-    <!-- 🟢 分类（作品集结构） -->
     <button class="filter__btn is-active" data-filter="all">All</button>
-    <button class="filter__btn" data-filter="ue">UE Projects</button>
+    <button class="filter__btn" data-filter="ue">UE</button>
     <button class="filter__btn" data-filter="digital_twin">Digital Twin</button>
     <button class="filter__btn" data-filter="gis">GIS</button>
-    <button class="filter__btn" data-filter="modeling">3D Modeling</button>
-
+    <button class="filter__btn" data-filter="modeling">3D</button>
   </div>
 </div>
 
-<!-- ================= GALLERY ================= -->
-<main class="gallery" id="js-gallery">
-
-  <!-- ========== UE 项目 ========== -->
-  <div class="gallery__item" data-category="ue"
-       data-full="images/ue_01.jpg"
-       data-title="UE5 City Environment System"
-       data-meta="UE5 · Lumen · 2025">
-
-    <img src="images/ue_01_thumb.jpg" alt="" loading="lazy">
-
-  </div>
-
-  <div class="gallery__item" data-category="ue"
-       data-full="images/ue_02.jpg"
-       data-title="Real-time Lighting Scene"
-       data-meta="UE5 · Blueprint · 2025">
-
-    <img src="images/ue_02_thumb.jpg" alt="" loading="lazy">
-
-  </div>
-
-  <!-- ========== Digital Twin ========== -->
-  <div class="gallery__item" data-category="digital_twin"
-       data-full="images/dt_01.jpg"
-       data-title="Smart City Digital Twin Dashboard"
-       data-meta="IoT · Visualization · 2025">
-
-    <img src="images/dt_01_thumb.jpg" alt="" loading="lazy">
-
-  </div>
-
-  <!-- ========== GIS ========== -->
-  <div class="gallery__item" data-category="gis"
-       data-full="images/gis_01.jpg"
-       data-title="Urban Spatial Analysis System"
-       data-meta="GIS · QGIS · Data Viz">
-
-    <img src="images/gis_01_thumb.jpg" alt="" loading="lazy">
-
-  </div>
-
-  <!-- ========== 3D Modeling ========== -->
-  <div class="gallery__item" data-category="modeling"
-       data-full="images/model_01.jpg"
-       data-title="Hard Surface Prop Modeling"
-       data-meta="Blender · Substance · 2025">
-
-    <img src="images/model_01_thumb.jpg" alt="" loading="lazy">
-
-  </div>
-
+<!-- ================= GALLERY（自动生成） ================= -->
+<main class="gallery" id="gallery">
+  <!-- JS 自动插入内容 -->
 </main>
 
-<!-- ================= LIGHTBOX（不动） ================= -->
+<!-- ================= LIGHTBOX（保留原功能） ================= -->
 <div class="lightbox" id="js-lightbox">
-
   <button id="js-lb-close">X</button>
   <img id="js-lb-image" src="" />
-
 </div>
 
-<!-- ================= SCRIPT ================= -->
+<!-- ================= 自动生成核心脚本 ================= -->
+<script>
+fetch('images.json')
+  .then(res => res.json())
+  .then(data => {
+
+    const gallery = document.getElementById('gallery');
+
+    data.forEach(item => {
+
+      const div = document.createElement('div');
+      div.className = "gallery__item";
+
+      // 分类（用于筛选）
+      div.setAttribute("data-category", item.category);
+
+      // 点击放大用
+      div.setAttribute("data-full", item.file);
+
+      // 标题（可扩展 lightbox）
+      div.setAttribute("data-title", item.title || "");
+
+      // 内容
+      div.innerHTML = `
+        <img src="${item.file}" alt="${item.title || ''}" loading="lazy">
+        <div class="caption">
+          <div class="title">${item.title || ''}</div>
+        </div>
+      `;
+
+      gallery.appendChild(div);
+    });
+
+  });
+</script>
+
+<!-- ================= 原模板JS（如果有就保留） ================= -->
 <script src="tooplate-exhibit-script.js"></script>
 
 </body>
