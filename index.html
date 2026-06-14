@@ -11,14 +11,14 @@
 
 <body>
 
-<!-- ================= NAV ================= -->
+<!-- ================= 导航栏 ================= -->
 <nav class="site-nav">
   <a href="index.html" class="nav__wordmark">
     ZEROV <span>/ Portfolio</span>
   </a>
 </nav>
 
-<!-- ================= HERO ================= -->
+<!-- ================= 主视觉巨幕 ================= -->
 <header class="site-hero">
   <h1 class="hero__title">
     UE &<br><strong>Portfolio</strong>
@@ -29,7 +29,7 @@
   </p>
 </header>
 
-<!-- ================= FILTER ================= -->
+<!-- ================= 过滤器 ================= -->
 <div class="gallery-filter-wrap">
   <div class="gallery-filter">
     <button class="filter__btn is-active" data-filter="all">All</button>
@@ -40,37 +40,38 @@
   </div>
 </div>
 
-<!-- ================= GALLERY（自动生成） ================= -->
+<!-- ================= 画廊（自动生成） ================= -->
 <main class="gallery" id="gallery"></main>
 
-<!-- ================= LIGHTBOX（保留模板功能） ================= -->
-<div class="lightbox" id="js-lightbox">
+<!-- ================= 灯箱（大图查看） ================= -->
+<!-- 初始化默认隐藏 display: none -->
+<div class="lightbox" id="js-lightbox" style="display: none;">
   <button id="js-lb-close">X</button>
-  <img id="js-lb-image" src="" />
+  <img id="js-lb-image" src="" alt="大图预览" />
 </div>
 
-<!-- ================= JS 自动渲染 ================= -->
+<!-- ================= JS 自动渲染与交互 ================= -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+  const gallery = document.getElementById("gallery");
+  const filterButtons = document.querySelectorAll(".filter__btn");
+  const lightbox = document.getElementById("js-lightbox");
+  const lightboxImg = document.getElementById("js-lb-image");
+  const lightboxClose = document.getElementById("js-lb-close");
 
+  // 1. 异步获取数据并渲染画廊
   fetch("images.json")
     .then(res => res.json())
     .then(data => {
-
-      const gallery = document.getElementById("gallery");
-
       data.forEach(item => {
-
         const el = document.createElement("div");
         el.className = "gallery__item";
 
-        // 分类
+        // 分类与大图路径赋值
         el.setAttribute("data-category", item.category);
-
-        // 大图
         el.setAttribute("data-full", item.file);
 
-        // HTML内容
+        // 内部 HTML 结构
         el.innerHTML = `
           <img src="${item.file}" loading="lazy" alt="${item.title}">
           <div class="caption">
@@ -79,14 +80,64 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
 
         gallery.appendChild(el);
-
       });
 
+      // 数据加载完成后，初始化灯箱点击事件
+      initLightbox();
     })
     .catch(err => {
       console.error("加载 images.json 失败：", err);
     });
 
+  // 2. 分类筛选逻辑
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      // 切换按钮的激活状态样式
+      document.querySelector(".filter__btn.is-active").classList.remove("is-active");
+      button.classList.add("is-active");
+
+      const filterValue = button.getAttribute("data-filter");
+      const items = gallery.querySelectorAll(".gallery__item");
+
+      items.forEach(item => {
+        const itemCategory = item.getAttribute("data-category");
+        
+        // 如果点击的是 'all' 或者项目分类匹配，则显示，否则隐藏
+        if (filterValue === "all" || itemCategory === filterValue) {
+          item.style.display = "block"; // 根据您的CSS，也可以是 flex 或 grid
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // 3. 灯箱大图逻辑
+  function initLightbox() {
+    // 使用事件代理，点击画廊内的任意作品触发
+    gallery.addEventListener("click", (e) => {
+      const item = e.target.closest(".gallery__item");
+      if (!item) return;
+
+      const fullImgUrl = item.getAttribute("data-full");
+      lightboxImg.src = fullImgUrl;
+      lightbox.style.display = "flex"; // 以 Flex 居中对齐方式显示灯箱
+    });
+
+    // 点击 X 按钮关闭灯箱
+    lightboxClose.addEventListener("click", () => {
+      lightbox.style.display = "none";
+      lightboxImg.src = ""; // 清空图片路径释放内存
+    });
+
+    // 点击大图周围的黑色半透明背景也能关闭灯箱
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = "none";
+        lightboxImg.src = "";
+      }
+    });
+  }
 });
 </script>
 
