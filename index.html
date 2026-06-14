@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>ZEROV — UE / Digital Twin Portfolio</title>
+  <title>ZEROV — Portfolio</title>
 
   <link rel="stylesheet" href="tooplate-exhibit-style.css" />
 </head>
@@ -16,10 +16,6 @@
   <a href="index.html" class="nav__wordmark">
     ZEROV <span>/ Portfolio</span>
   </a>
-
-  <ul class="nav__links">
-    <li><a href="#" class="nav__link--active">Gallery</a></li>
-  </ul>
 </nav>
 
 <!-- ================= HERO ================= -->
@@ -33,7 +29,7 @@
   </p>
 </header>
 
-<!-- ================= FILTER（保留结构，后续可扩展） ================= -->
+<!-- ================= FILTER ================= -->
 <div class="gallery-filter-wrap">
   <div class="gallery-filter">
     <button class="filter__btn is-active" data-filter="all">All</button>
@@ -45,97 +41,56 @@
 </div>
 
 <!-- ================= GALLERY（自动生成） ================= -->
-<main class="gallery" id="gallery">
-  <!-- JS 自动插入内容 -->
-</main>
+<main class="gallery" id="gallery"></main>
 
-<!-- ================= LIGHTBOX（保留原功能） ================= -->
+<!-- ================= LIGHTBOX（保留模板功能） ================= -->
 <div class="lightbox" id="js-lightbox">
   <button id="js-lb-close">X</button>
   <img id="js-lb-image" src="" />
 </div>
 
-<!-- ================= 自动生成核心脚本 ================= -->
-<script>
-fetch('images.json')
-  .then(res => res.json())
-  .then(data => {
-
-    const gallery = document.getElementById('gallery');
-
-    data.forEach(item => {
-
-      const div = document.createElement('div');
-      div.className = "gallery__item";
-
-      // 分类（用于筛选）
-      div.setAttribute("data-category", item.category);
-
-      // 点击放大用
-      div.setAttribute("data-full", item.file);
-
-      // 标题（可扩展 lightbox）
-      div.setAttribute("data-title", item.title || "");
-
-      // 内容
-      div.innerHTML = `
-        <img src="${item.file}" alt="${item.title || ''}" loading="lazy">
-        <div class="caption">
-          <div class="title">${item.title || ''}</div>
-        </div>
-      `;
-
-      gallery.appendChild(div);
-    });
-
-  });
-</script>
-
-<!-- ================= 原模板JS（如果有就保留） ================= -->
-<script src="tooplate-exhibit-script.js"></script>
+<!-- ================= JS 自动渲染 ================= -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
   fetch("images.json")
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
 
       const gallery = document.getElementById("gallery");
 
       data.forEach(item => {
 
-        // 🟢 创建作品卡片
         const el = document.createElement("div");
-
         el.className = "gallery__item";
 
-        // 🟢 分类（用于筛选）
-        el.setAttribute("data-category", item.category || "all");
+        // 分类
+        el.setAttribute("data-category", item.category);
 
-        // 🟢 大图（点击放大用）
+        // 大图
         el.setAttribute("data-full", item.file);
 
-        // 🟢 标题
-        el.setAttribute("data-title", item.title || "");
-
-        // 🟢 HTML内容
+        // HTML内容
         el.innerHTML = `
-          <img src="${item.file}" alt="${item.title || ''}" loading="lazy">
-
+          <img src="${item.file}" loading="lazy" alt="${item.title}">
           <div class="caption">
-            <div class="title">${item.title || ""}</div>
+            <div class="title">${item.title}</div>
           </div>
         `;
 
         gallery.appendChild(el);
+
       });
 
     })
     .catch(err => {
-      console.error("图片加载失败：", err);
+      console.error("加载 images.json 失败：", err);
     });
 
 });
 </script>
+
+<script src="tooplate-exhibit-script.js"></script>
+
 </body>
 </html>
