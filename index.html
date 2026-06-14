@@ -93,6 +93,49 @@ fetch('images.json')
 
 <!-- ================= 原模板JS（如果有就保留） ================= -->
 <script src="tooplate-exhibit-script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+  fetch("images.json")
+    .then(response => response.json())
+    .then(data => {
+
+      const gallery = document.getElementById("gallery");
+
+      data.forEach(item => {
+
+        // 🟢 创建作品卡片
+        const el = document.createElement("div");
+
+        el.className = "gallery__item";
+
+        // 🟢 分类（用于筛选）
+        el.setAttribute("data-category", item.category || "all");
+
+        // 🟢 大图（点击放大用）
+        el.setAttribute("data-full", item.file);
+
+        // 🟢 标题
+        el.setAttribute("data-title", item.title || "");
+
+        // 🟢 HTML内容
+        el.innerHTML = `
+          <img src="${item.file}" alt="${item.title || ''}" loading="lazy">
+
+          <div class="caption">
+            <div class="title">${item.title || ""}</div>
+          </div>
+        `;
+
+        gallery.appendChild(el);
+      });
+
+    })
+    .catch(err => {
+      console.error("图片加载失败：", err);
+    });
+
+});
+</script>
 </body>
 </html>
