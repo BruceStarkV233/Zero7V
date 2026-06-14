@@ -1,12 +1,17 @@
 [
   {
     "file": "images/ue_01.jpg",
-    "title": "UE Scene 01",
+    "title": "UE City Scene",
     "category": "ue"
   },
   {
     "file": "images/dt_01.jpg",
-    "title": "Digital Twin",
+    "title": "Digital Twin Dashboard",
     "category": "digital_twin"
+  },
+  {
+    "file": "images/gis_01.jpg",
+    "title": "GIS Map Analysis",
+    "category": "gis"
   }
 ]
