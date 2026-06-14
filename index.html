@@ -1,147 +1,419 @@
+为你提供一份添加了详细中文注释的 HTML 代码。我将原代码中的所有英文逻辑注释保留并翻译，同时在你可以直接修改和替换内容的地方，使用了醒目的 **``** 标记，方便你快速定位。
+
+```html
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exhibit — 摄影作品集</title>
+  <meta name="description" content="一个极简风格的摄影作品集画廊模板。" />
 
-  <title>ZEROV — Portfolio</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="tooplate-exhibit-style.css" />
 </head>
-
 <body>
 
-<!-- ================= 导航栏 ================= -->
-<nav class="site-nav">
-  <a href="index.html" class="nav__wordmark">
-    ZEROV <span>/ Portfolio</span>
-  </a>
-</nav>
+  <nav class="site-nav" role="navigation" aria-label="Main">
 
-<!-- ================= 主视觉巨幕 ================= -->
-<header class="site-hero">
-  <h1 class="hero__title">
-    UE &<br><strong>Portfolio</strong>
-  </h1>
+    <div class="nav__bar">
 
-  <p class="hero__desc">
-    Unreal Engine · Digital Twin · GIS · 3D Visualization
-  </p>
-</header>
+      <a href="index.html" class="nav__wordmark">Exhibit <span>/ Studio</span></a>
 
-<!-- ================= 过滤器 ================= -->
-<div class="gallery-filter-wrap">
-  <div class="gallery-filter">
-    <button class="filter__btn is-active" data-filter="all">All</button>
-    <button class="filter__btn" data-filter="ue">UE</button>
-    <button class="filter__btn" data-filter="digital_twin">Digital Twin</button>
-    <button class="filter__btn" data-filter="gis">GIS</button>
-    <button class="filter__btn" data-filter="modeling">3D</button>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link--active">作品集</a></li>
+        <li><a href="about.html">关于我</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+
+      <button
+        class="nav__hamburger"
+        id="js-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="js-mobile-menu"
+      >
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+      </button>
+
+    </div><ul class="nav__mobile-menu" id="js-mobile-menu" aria-hidden="true">
+      <li><a href="index.html" class="nav__link--active">作品集</a></li>
+      <li><a href="about.html">关于我</a></li>
+      <li><a href="contact.html">联系方式</a></li>
+    </ul>
+
+  </nav>
+
+
+  <header class="site-hero">
+
+    <p class="hero__tag">摄影作品 · 2026</p>
+
+    <h1 class="hero__title">
+      光 · 与<br><strong>阴影</strong>
+    </h1>
+
+    <div class="hero__meta">
+      <span class="hero__count" id="js-photo-count">24 张照片</span>
+      <div class="hero__rule" aria-hidden="true"></div>
+      <p class="hero__desc">关于对比的研究 —— 那些在黑暗与持久的光芒之间定格的瞬间。</p>
+    </div>
+
+  </header>
+
+
+  <div class="gallery-filter-wrap">
+    <div class="gallery-filter" role="toolbar" aria-label="Filter gallery">
+
+      <button class="filter__btn is-active" data-filter="all">全部</button>
+      <button class="filter__btn" data-filter="portrait">人像</button>
+      <button class="filter__btn" data-filter="landscape">风光</button>
+      <button class="filter__btn" data-filter="urban">城市</button>
+      <button class="filter__btn" data-filter="nature">自然</button>
+
+    </div>
   </div>
-</div>
 
-<!-- ================= 画廊（自动生成） ================= -->
-<main class="gallery" id="gallery"></main>
 
-<!-- ================= 灯箱（大图查看） ================= -->
-<!-- 初始化默认隐藏 display: none -->
-<div class="lightbox" id="js-lightbox" style="display: none;">
-  <button id="js-lb-close">X</button>
-  <img id="js-lb-image" src="" alt="大图预览" />
-</div>
+  <main class="gallery" id="js-gallery" aria-label="Photo gallery">
 
-<!-- ================= JS 自动渲染与交互 ================= -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const gallery = document.getElementById("gallery");
-  const filterButtons = document.querySelectorAll(".filter__btn");
-  const lightbox = document.getElementById("js-lightbox");
-  const lightboxImg = document.getElementById("js-lb-image");
-  const lightboxClose = document.getElementById("js-lb-close");
 
-  // 1. 异步获取数据并渲染画廊
-  fetch("images.json")
-    .then(res => res.json())
-    .then(data => {
-      data.forEach(item => {
-        const el = document.createElement("div");
-        el.className = "gallery__item";
+    <div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-01.jpg"
+         data-title="金色华彩"
+         data-meta="意大利 · 托斯卡纳 · 2024">
 
-        // 分类与大图路径赋值
-        el.setAttribute("data-category", item.category);
-        el.setAttribute("data-full", item.file);
+      <img
+        src="images/thumb-exhibit-01.jpg"
+        width="600"
+        height="900"
+        alt="在金色黄昏光线中捕捉的人像"
+        class="gallery__image"
+        loading="lazy"
+      />
 
-        // 内部 HTML 结构
-        el.innerHTML = `
-          <img src="${item.file}" loading="lazy" alt="${item.title}">
-          <div class="caption">
-            <div class="title">${item.title}</div>
-          </div>
-        `;
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">金色华彩</span>
+        <span class="gallery__caption-meta">意大利 · 托斯卡纳 · 2024</span>
+      </div>
 
-        gallery.appendChild(el);
-      });
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
 
-      // 数据加载完成后，初始化灯箱点击事件
-      initLightbox();
-    })
-    .catch(err => {
-      console.error("加载 images.json 失败：", err);
-    });
+    </div><div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-02.jpg"
+         data-title="海岸迷雾"
+         data-meta="美国加州 · 大苏尔 · 2023">
 
-  // 2. 分类筛选逻辑
-  filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      // 切换按钮的激活状态样式
-      document.querySelector(".filter__btn.is-active").classList.remove("is-active");
-      button.classList.add("is-active");
+      <img
+        src="images/thumb-exhibit-02.jpg"
+        width="600"
+        height="400"
+        alt="崎岖海岸线上空的迷雾"
+        class="gallery__image"
+        loading="lazy"
+      />
 
-      const filterValue = button.getAttribute("data-filter");
-      const items = gallery.querySelectorAll(".gallery__item");
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">海岸迷雾</span>
+        <span class="gallery__caption-meta">美国加州 · 大苏尔 · 2023</span>
+      </div>
 
-      items.forEach(item => {
-        const itemCategory = item.getAttribute("data-category");
-        
-        // 如果点击的是 'all' 或者项目分类匹配，则显示，否则隐藏
-        if (filterValue === "all" || itemCategory === filterValue) {
-          item.style.display = "block"; // 根据您的CSS，也可以是 flex 或 grid
-        } else {
-          item.style.display = "none";
-        }
-      });
-    });
-  });
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
 
-  // 3. 灯箱大图逻辑
-  function initLightbox() {
-    // 使用事件代理，点击画廊内的任意作品触发
-    gallery.addEventListener("click", (e) => {
-      const item = e.target.closest(".gallery__item");
-      if (!item) return;
+    </div><div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-03.jpg"
+         data-title="钢铁与玻璃"
+         data-meta="美国 · 纽约 · 2024">
 
-      const fullImgUrl = item.getAttribute("data-full");
-      lightboxImg.src = fullImgUrl;
-      lightbox.style.display = "flex"; // 以 Flex 居中对齐方式显示灯箱
-    });
+      <img
+        src="images/thumb-exhibit-03.jpg"
+        width="600"
+        height="800"
+        alt="映射着钢铁与玻璃的城市建筑"
+        class="gallery__image"
+        loading="lazy"
+      />
 
-    // 点击 X 按钮关闭灯箱
-    lightboxClose.addEventListener("click", () => {
-      lightbox.style.display = "none";
-      lightboxImg.src = ""; // 清空图片路径释放内存
-    });
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">钢铁与玻璃</span>
+        <span class="gallery__caption-meta">美国 · 纽约 · 2024</span>
+      </div>
 
-    // 点击大图周围的黑色半透明背景也能关闭灯箱
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) {
-        lightbox.style.display = "none";
-        lightboxImg.src = "";
-      }
-    });
-  }
-});
-</script>
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
 
-<script src="tooplate-exhibit-script.js"></script>
+    </div><div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-04.jpg"
+         data-title="林间地表"
+         data-meta="太平洋西北地区 · 2023">
+
+      <img
+        src="images/thumb-exhibit-04.jpg"
+        width="600"
+        height="400"
+        alt="阳光透过密林洒在地表上"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">林间地表</span>
+        <span class="gallery__caption-meta">太平洋西北地区 · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-05.jpg"
+         data-title="周日的窗边"
+         data-meta="荷兰 · 阿姆斯特丹 · 2024">
+
+      <img
+        src="images/thumb-exhibit-05.jpg"
+        width="600"
+        height="900"
+        alt="周日清晨窗边安静的人像"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">周日的窗边</span>
+        <span class="gallery__caption-meta">荷兰 · 阿姆斯特丹 · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-06.jpg"
+         data-title="黄昏盐滩"
+         data-meta="美国犹他州 · 邦纳维尔 · 2023">
+
+      <img
+        src="images/thumb-exhibit-06.jpg"
+        width="600"
+        height="360"
+        alt="黄昏时分延伸至地平线的盐滩"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">黄昏盐滩</span>
+        <span class="gallery__caption-meta">美国犹他州 · 邦纳维尔 · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-07.jpg"
+         data-title="夜市烟火"
+         data-meta="泰国 · 曼谷 · 2024">
+
+      <img
+        src="images/thumb-exhibit-07.jpg"
+        width="600"
+        height="600"
+        alt="曼谷夜市五颜六色的摊位"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">夜市烟火</span>
+        <span class="gallery__caption-meta">泰国 · 曼谷 · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-08.jpg"
+         data-title="季风时节"
+         data-meta="印度 · 喀拉拉邦 · 2023">
+
+      <img
+        src="images/thumb-exhibit-08.jpg"
+        width="600"
+        height="900"
+        alt="暴雨倾泻在郁郁葱葱的绿叶上"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">季风时节</span>
+        <span class="gallery__caption-meta">印度 · 喀拉拉邦 · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="portrait"
+         data-full="images/tooplate-exhibit-09.jpg"
+         data-title="织工"
+         data-meta="墨西哥 · 瓦哈卡 · 2024">
+
+      <img
+        src="images/thumb-exhibit-09.jpg"
+        width="600"
+        height="750"
+        alt="手工织布机前传统的手艺人"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">织工</span>
+        <span class="gallery__caption-meta">墨西哥 · 瓦哈卡 · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="landscape"
+         data-full="images/tooplate-exhibit-10.jpg"
+         data-title="午夜阿尔卑斯"
+         data-meta="瑞士 · 采尔马特 · 2023">
+
+      <img
+        src="images/thumb-exhibit-10.jpg"
+        width="600"
+        height="400"
+        alt="午夜星空下的马特洪峰"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">午夜阿尔卑斯</span>
+        <span class="gallery__caption-meta">瑞士 · 采尔马特 · 2023</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="urban"
+         data-full="images/tooplate-exhibit-11.jpg"
+         data-title="柱间微光"
+         data-meta="德国 · 柏林 · 2024">
+
+      <img
+        src="images/thumb-exhibit-11.jpg"
+        width="600"
+        height="800"
+        alt="一束光线穿透黑暗的石柱"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">柱间微光</span>
+        <span class="gallery__caption-meta">德国 · 柏林 · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div><div class="gallery__item" data-category="nature"
+         data-full="images/tooplate-exhibit-12.jpg"
+         data-title="潮汐集结"
+         data-meta="西班牙 · 加利西亚 · 2024">
+
+      <img
+        src="images/thumb-exhibit-12.jpg"
+        width="600"
+        height="400"
+        alt="海岸潮汐池中的抽象图案"
+        class="gallery__image"
+        loading="lazy"
+      />
+
+      <div class="gallery__caption">
+        <span class="gallery__caption-title">潮汐集结</span>
+        <span class="gallery__caption-meta">西班牙 · 加利西亚 · 2024</span>
+      </div>
+
+      <div class="gallery__expand-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" stroke-width="1.5"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg>
+      </div>
+
+    </div></main><div class="lightbox" id="js-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+
+    <div class="lightbox__bar">
+      <span class="lightbox__counter" id="js-lb-counter" aria-live="polite"></span>
+      <button class="lightbox__close" id="js-lb-close" aria-label="Close photo viewer">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="lightbox__stage">
+
+      <button class="lightbox__nav lightbox__nav--prev" id="js-lb-prev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <img src="" alt="" class="lightbox__image" id="js-lb-image" />
+
+      <button class="lightbox__nav lightbox__nav--next" id="js-lb-next" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="lightbox__caption">
+      <p class="lightbox__caption-title" id="js-lb-title"></p>
+      <p class="lightbox__caption-meta"  id="js-lb-meta"></p>
+    </div>
+
+  </div><footer class="site-footer">
+
+    <div>
+      <p class="footer__brand">Exhibit Studio</p>
+      <p class="footer__credit">
+        Free CSS template by <a href="https://www.tooplate.com/view/2160-exhibit-studio" target="_blank" rel="nofollow">Tooplate</a>.<br>
+        Photos via <a href="https://picsum.photos" target="_blank" rel="noopener">Lorem Picsum</a>. Free for personal &amp; commercial use.
+      </p>
+    </div>
+
+    <ul class="footer__nav">
+      <li><a href="index.html">作品集</a></li>
+      <li><a href="about.html">关于我</a></li>
+      <li><a href="contact.html">联系方式</a></li>
+    </ul>
+
+  </footer>
+
+
+  <script src="tooplate-exhibit-script.js"></script>
 
 </body>
 </html>
+
+```
