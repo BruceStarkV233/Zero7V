@@ -1,7 +1,12 @@
 [
   {
     "file": "images/ue_01.jpg",
-    "title": "UE City Scene",
+    "title": "UE City Environment",
+    "category": "ue"
+  },
+  {
+    "file": "images/ue_02.jpg",
+    "title": "Lighting Scene Test",
     "category": "ue"
   },
   {
@@ -11,7 +16,12 @@
   },
   {
     "file": "images/gis_01.jpg",
-    "title": "GIS Map Analysis",
+    "title": "GIS Urban Analysis",
     "category": "gis"
+  },
+  {
+    "file": "images/model_01.jpg",
+    "title": "3D Modeling Work",
+    "category": "modeling"
   }
 ]
