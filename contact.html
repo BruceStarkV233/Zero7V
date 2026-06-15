@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>联系我 — CuiBoWei</title>
+  <meta name="description" content="与3D设计师崔博伟联系，讨论设计项目与合作机会。" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tooplate-exhibit-style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav class="site-nav" role="navigation" aria-label="Main">
+
+    <div class="nav__bar">
+      <!-- ↓ 修改：替换为你的工作室/品牌名称 -->
+      <a href="index.html" class="nav__wordmark">CuiBoWei <span>/ ArtWork</span></a>
+
+      <ul class="nav__links">
+        <li><a href="index.html">作品集</a></li>
+        <li><a href="about.html">关于我</a></li>
+        <li><a href="contact.html" class="nav__link--active">联系方式</a></li>
+      </ul>
+
+      <button
+        class="nav__hamburger"
+        id="js-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="js-mobile-menu"
+      >
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+      </button>
+    </div>
+
+    <ul class="nav__mobile-menu" id="js-mobile-menu" aria-hidden="true">
+      <li><a href="index.html">作品集</a></li>
+      <li><a href="about.html">关于我</a></li>
+      <li><a href="contact.html" class="nav__link--active">联系方式</a></li>
+    </ul>
+
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       横幅区域
+       ═══════════════════════════════════════════════════════════════ -->
+  <header class="page-hero">
+    <p class="page-hero__tag">联系我们</p>
+    <!-- ↓ 修改：修改联系页面的标题 -->
+    <h1 class="page-hero__title">让我们<strong>携手合作</strong></h1>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       联系内容区域
+       ═══════════════════════════════════════════════════════════════ -->
+  <main class="contact-body">
+
+    <div class="contact-grid">
+
+      <!-- ── 联系表单 ──────────────────────────────────────── -->
+      <div class="contact-form-wrap">
+
+        <h2 class="contact-form__heading">发送消息</h2>
+        <!-- ↓ 修改：根据你的回复时间调整副标题 -->
+        <p class="contact-form__subheading">
+          我通常在两个工作日内回复。如有紧急项目需求，
+          请在消息中标明截止日期。
+        </p>
+
+        <!-- ↓ 修改：要连接到后端，请用你的表单端点（Formspree、Netlify Forms 等）
+             替换 action="#"。下面的 JS 处理客户端验证。 -->
+        <form id="js-contact-form" novalidate>
+
+          <div class="form-row">
+            <!-- 姓名 -->
+            <div class="form-field">
+              <label class="form-label" for="field-name">
+                姓名 <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="field-name"
+                name="name"
+                class="form-input"
+                placeholder="你的姓名"
+                autocomplete="name"
+                required
+              />
+              <span class="field-error" id="err-name">请输入你的姓名。</span>
+            </div>
+
+            <!-- 邮箱 -->
+            <div class="form-field">
+              <label class="form-label" for="field-email">
+                邮箱 <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="field-email"
+                name="email"
+                class="form-input"
+                placeholder="你的@邮箱.com"
+                autocomplete="email"
+                required
+              />
+              <span class="field-error" id="err-email">请输入有效的邮箱地址。</span>
+            </div>
+          </div>
+
+          <!-- 主题/咨询类型 -->
+          <div class="form-field">
+            <label class="form-label" for="field-subject">咨询类型</label>
+            <div class="form-select-wrap">
+              <select id="field-subject" name="subject" class="form-select">
+                <!-- ↓ 修改：更新选项以匹配你的服务类型 -->
+                <option value="">选择主题…</option>
+                <option value="modeling">3D建模服务</option>
+                <option value="design">设计咨询</option>
+                <option value="gamedev">游戏开发合作</option>
+                <option value="visualization">可视化设计</option>
+                <option value="collaboration">项目合作</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 消息 -->
+          <div class="form-field">
+            <label class="form-label" for="field-message">
+              消息 <span class="required" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="field-message"
+              name="message"
+              class="form-textarea"
+              placeholder="请告诉我你的项目、时间表和其他相关细节…"
+              required
+            ></textarea>
+            <span class="field-error" id="err-message">请填写消息。</span>
+          </div>
+
+          <!-- 提交按钮 -->
+          <div class="form-submit">
+            <button type="submit" class="btn-submit" id="js-submit-btn">
+              发送消息
+            </button>
+            <p class="form-note">
+              * 必填项。你的信息不会与第三方共享。
+            </p>
+          </div>
+
+          <!-- 反馈消息 -->
+          <div class="form-message is-success" id="js-success" role="alert">
+            ✓ &nbsp;你的消息已发送。我很快会联系你。
+          </div>
+          <div class="form-message is-error" id="js-error" role="alert">
+            出错了。请直接发邮件到下方地址。
+          </div>
+
+        </form>
+
+      </div><!-- /contact-form-wrap -->
+
+
+      <!-- ── 侧边栏信息 ──────────────────────────────────────── -->
+      <aside class="contact-info" aria-label="Contact information">
+
+        <!-- 接单状态 -->
+        <div class="contact-info__section">
+          <p class="contact-info__label">接单状态</p>
+          <!-- ↓ 修改：当不接单时，改变点的颜色为红色 (#e74c3c) 并修改文本 -->
+          <div class="availability">
+            <span class="availability__dot"></span>
+            接受新项目
+          </div>
+        </div>
+
+        <!-- 邮箱地址 -->
+        <div class="contact-info__section">
+          <p class="contact-info__label">邮箱</p>
+          <!-- ↓ 修改：替换为你的邮箱地址 -->
+          <a href="mailto:Zero7v@foxmail.com" class="contact-info__link">
+            Zero7v@foxmail.com
+          </a>
+        </div>
+
+        <!-- 所在地 -->
+        <div class="contact-info__section">
+          <p class="contact-info__label">所在地</p>
+          <!-- ↓ 修改：你的所在地 -->
+          <p class="contact-info__value">
+            安徽合肥<br>
+          </p>
+        </div>
+
+        <!-- 社交媒体 -->
+        <div class="contact-info__section">
+          <p class="contact-info__label">社交媒体</p>
+          <div class="social-links">
+
+            <!-- ↓ 修改：用你的社交媒体链接替换 href 的值 -->
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="social-link">
+              <span class="social-link__platform">Instagram</span>
+              @CuiBoWei
+            </a>
+
+            <a href="https://www.artstation.com/" target="_blank" rel="noopener" class="social-link">
+              <span class="social-link__platform">ArtStation</span>
+              CuiBoWei
+            </a>
+
+            <a href="https://linkedin.com/" target="_blank" rel="noopener" class="social-link">
+              <span class="social-link__platform">Boss直聘</span>
+              崔博伟
+            </a>
+
+          </div>
+        </div>
+
+        <!-- 回复时间 -->
+        <div class="contact-info__section">
+          <p class="contact-info__label">回复时间</p>
+          <p class="contact-info__value">2个工作日内</p>
+        </div>
+
+      </aside><!-- /contact-info -->
+
+    </div><!-- /contact-grid -->
+
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       页脚
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div>
+      <!-- ↓ 修改：你的工作室名称 -->
+      <p class="footer__brand">CuiBoWei ArtWork</p>
+      <p class="footer__credit">
+        © 2026 CuiBoWei. All rights reserved. 版权所有。
+      </p>
+    </div>
+    <ul class="footer__nav">
+      <li><a href="index.html">作品集</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="contact.html">联系</a></li>
+    </ul>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JavaScript — 菜单切换 + 表单验证
+       ═══════════════════════════════════════════════════════════════ -->
+  <script src="tooplate-exhibit-script.js"></script>
+
+</body>
+</html>

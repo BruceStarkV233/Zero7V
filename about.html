@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>关于我 — CuiBoWei</title>
+  <meta name="description" content="3D艺术家崔博伟的个人介绍与工作经历。" />
+
+  <!--
+Tooplate 2160 Exhibit Studio
+https://www.tooplate.com/view/2160-exhibit-studio
+Free HTML CSS Template
+-->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tooplate-exhibit-style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav class="site-nav" role="navigation" aria-label="Main">
+
+    <div class="nav__bar">
+      <!-- ↓ 修改：替换为你的工作室/品牌名称 -->
+      <a href="index.html" class="nav__wordmark">CuiBoWei <span>/ ArtWork</span></a>
+
+      <ul class="nav__links">
+        <li><a href="index.html">作品集</a></li>
+        <li><a href="about.html" class="nav__link--active">关于我</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+
+      <button
+        class="nav__hamburger"
+        id="js-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="js-mobile-menu"
+      >
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+      </button>
+    </div>
+
+    <ul class="nav__mobile-menu" id="js-mobile-menu" aria-hidden="true">
+      <li><a href="index.html">作品集</a></li>
+      <li><a href="about.html" class="nav__link--active">关于</a></li>
+      <li><a href="contact.html">联系</a></li>
+    </ul>
+
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       横幅区域
+       ═══════════════════════════════════════════════════════════════ -->
+  <header class="page-hero">
+    <p class="page-hero__tag">3D艺术家</p>
+    <!-- ↓ 修改：修改关于页面的标题 -->
+    <h1 class="page-hero__title">个人<strong>信息</strong></h1>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       关于内容区域
+       ═══════════════════════════════════════════════════════════════ -->
+  <main class="about-body">
+
+    <!-- ── 头像 + 个人介绍 ──────────────────────────────────────── -->
+    <div class="about-intro">
+
+      <div class="about-portrait">
+        <!-- ↓ 修改：替换为你的头像照片 -->
+        <img
+          src="images/Profile.jpg"
+          width="600"
+          height="800"
+          alt="摄影师的头像"
+          class="about-portrait__img"
+          loading="eager"
+        />
+      </div>
+
+      <div class="about-bio">
+        <p class="about-bio__label">3D艺术家</p>
+
+        <!-- ↓ 修改：替换为你的全名 -->
+        <h2 class="about-bio__name"><strong>Cui</strong> Bowei</h2>
+        <!-- ↓ 修改：替换为你的专业方向 -->
+        <p class="about-bio__title">3D艺术家 &amp; 3D建模师</p>
+
+        <div class="about-bio__divider" aria-hidden="true"></div>
+
+        <!-- ↓ 修改：替换为你的个人介绍（理想数量：2-3段） -->
+        <p class="about-bio__text">
+          我是一位驻合肥的3D建模师与复合型三维设计师，具备AI自动化资产管线搭建经验，熟悉UE/Unity项目全流程，拥有扎实的美术基础、良好的审美能力及图形学认知。能够从需求分析、资产生产、资源管理到项目落地进行全流程协作，兼具美术表现、技术理解与效率优化能力。
+        </p>
+
+        <!-- ── 实践理念 ──────────────────────────────────────────── -->
+        <div class="about-bio__divider" aria-hidden="true"></div>
+        <p class="about-bio__label">实践理念</p>
+
+        <div class="about-approach__items">
+
+          <!-- ↓ 修改：替换为你的工作理念 — 3个点为佳 -->
+          <div class="about-approach__item">
+            <div class="about-approach__item-number">01</div>
+            <h3 class="about-approach__item-title">系统化观察</h3>
+            <p class="about-approach__item-text">
+             我花在理解问题和拆解需求上的时间，比实际制作更长。无论是场景、角色、交互还是视觉叙事，我都会先分析其逻辑关系、使用场景与用户体验。
+             设计并非单一环节的输出，而是对整体系统节奏、信息层级和视觉语言的持续观察与整合。
+            </p>
+          </div>
+
+          <div class="about-approach__item">
+            <div class="about-approach__item-number">02</div>
+            <h3 class="about-approach__item-title">跨领域创作</h3>
+            <p class="about-approach__item-text">
+              我的工作覆盖三维建模、材质灯光、动画表现、实时渲染、可视化设计与工作流搭建等多个环节。
+              跨学科的创作经验让我能够从概念到落地，兼顾艺术表达与技术实现，在不同媒介和平台之间建立统一的视觉体验。
+            </p>
+          </div>
+
+          <div class="about-approach__item">
+            <div class="about-approach__item-number">03</div>
+            <h3 class="about-approach__item-title">精简工作流</h3>
+            <p class="about-approach__item-text">
+             我相信优秀的作品源于前期决策，而非后期修饰。
+             通过标准化流程、非破坏性制作和自动化工具，我将更多精力投入到创意与品质本身，而不是重复性操作。
+             技术服务于表达，流程提升效率，克制的设计选择往往比复杂的视觉堆砌更具价值。
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div><!-- /about-intro -->
+
+
+    <!-- ── 统计数据 ────────────────────────────────────────────────── -->
+    <div class="about-stats">
+
+      <!-- ↓ 修改：替换为你的职业数据统计 -->
+      <div class="about-stat">
+        <div class="about-stat__number">5</div>
+        <div class="about-stat__label">从业年份</div>
+      </div>
+
+      <div class="about-stat">
+        <div class="about-stat__number">100+</div>
+        <div class="about-stat__label">项目数量</div>
+      </div>
+
+      <div class="about-stat">
+        <div class="about-stat__number">3</div>
+        <div class="about-stat__label">工作经历</div>
+      </div>
+
+      <div class="about-stat">
+        <div class="about-stat__number">500+</div>
+        <div class="about-stat__label">模型制作</div>
+      </div>
+
+    </div><!-- /about-stats -->
+
+
+    <!-- ── 操作按钮 ─────────────────────────────────────── -->
+    <div class="about-cta">
+      <!-- ↓ 修改：改为你的联系页面与作品集链接 -->
+      <a href="contact.html" class="btn btn--primary">联系我</a>
+      <a href="index.html"   class="btn btn--ghost">查看作品集</a>
+    </div>
+
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       页脚
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div>
+      <!-- ↓ 修改：你的工作室名称 -->
+      <p class="footer__brand">CuiBoWei 作品集</p>
+      <p class="footer__credit">
+        © 2026 CuiBoWei. All rights reserved. 版权所有。
+      </p>
+    <ul class="footer__nav">
+      <li><a href="index.html">作品集</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="contact.html">联系</a></li>
+    </ul>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JavaScript — 菜单切换只
+       ═══════════════════════════════════════════════════════════════ -->
+  <script src="tooplate-exhibit-script.js"></script>
+
+</body>
+</html>
