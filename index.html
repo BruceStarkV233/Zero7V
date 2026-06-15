@@ -2365,7 +2365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.addEventListener('click', () => {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.classList.toggle('nav__mobile-menu--active');
+            mobileMenu.classList.toggle('is-open');
         });
     }
 
