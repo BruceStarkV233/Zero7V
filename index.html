@@ -1965,6 +1965,125 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter__btn');
     const galleryItems = document.querySelectorAll('.gallery__item');
     const photoCountEl = document.getElementById('js-photo-count');
+    const galleryEl = document.getElementById('js-gallery');
+
+    // ─────────────────────────────────────────────────────────────
+    // 2.5 Justified Gallery：按图片真实像素宽高比排布，
+    //     宽图占据更多横向空间、窄图占据更少，而不是让 CSS 瀑布流
+    //     用固定列宽去套所有图片（那样竖图看起来会比横图"更大"）。
+    // ─────────────────────────────────────────────────────────────
+    const ratioCache = new Map(); // item -> naturalWidth/naturalHeight
+
+    function getTargetRowHeight() {
+        const w = window.innerWidth;
+        if (w >= 1400) return 260;
+        if (w >= 1100) return 240;
+        if (w >= 768)  return 220;
+        if (w >= 480)  return 200;
+        return 220; // 单列时，行高即图片自身按满宽缩放后的高度上限，仅作参考
+    }
+
+    // 读取每张图（缩略图）的真实像素尺寸，只读一次并缓存
+    function loadRatio(item) {
+        if (ratioCache.has(item)) return Promise.resolve(ratioCache.get(item));
+        return new Promise((resolve) => {
+            const imgEl = item.querySelector('.gallery__image');
+            const src = imgEl ? imgEl.currentSrc || imgEl.src : '';
+            const probe = new Image();
+            probe.onload = () => {
+                const ratio = (probe.naturalWidth && probe.naturalHeight)
+                    ? probe.naturalWidth / probe.naturalHeight
+                    : 4 / 3; // 读取失败时退化为默认比例，不阻塞布局
+                ratioCache.set(item, ratio);
+                resolve(ratio);
+            };
+            probe.onerror = () => {
+                ratioCache.set(item, 4 / 3);
+                resolve(4 / 3);
+            };
+            probe.src = src;
+        });
+    }
+
+    // 对当前可见的一组 item，按“定高分行、行内按比例分配宽度”的方式排布
+    function layoutRow(rowItems, containerWidth, targetHeight, gap, isLastRow) {
+        const totalRatio = rowItems.reduce((sum, it) => sum + ratioCache.get(it), 0);
+        const totalGap = gap * (rowItems.length - 1);
+        let scale = (containerWidth - totalGap) / (totalRatio * targetHeight);
+
+        // 最后一行如果被拉伸得过于夸张（图片本来就没填满一行），就不强行拉伸
+        if (isLastRow && scale > 1.15) scale = 1;
+
+        const rowHeight = targetHeight * scale;
+        rowItems.forEach((it) => {
+            const ratio = ratioCache.get(it);
+            it.style.width  = (ratio * rowHeight) + 'px';
+            it.style.height = rowHeight + 'px';
+        });
+    }
+
+    function getContainerWidth() {
+        const style = window.getComputedStyle(galleryEl);
+        const paddingLeft = parseFloat(style.paddingLeft) || 0;
+        const paddingRight = parseFloat(style.paddingRight) || 0;
+        return galleryEl.clientWidth - paddingLeft - paddingRight - 1; // 留 1px 余量，避免取整误差导致意外换行
+    }
+
+    function layoutGallery() {
+        if (!galleryEl) return;
+        const visible = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+        if (visible.length === 0) return;
+
+        const containerWidth = getContainerWidth();
+        const gap = 12; // 与 CSS 中 --grid-column-gap 保持一致
+        const targetHeight = getTargetRowHeight();
+
+        let row = [];
+        let rowWidth = 0;
+
+        visible.forEach((item) => {
+            item.classList.add('js-justified');
+            const ratio = ratioCache.get(item) || 4 / 3;
+            const widthAtTarget = ratio * targetHeight;
+
+            row.push(item);
+            rowWidth += widthAtTarget + gap;
+
+            if (rowWidth >= containerWidth) {
+                layoutRow(row, containerWidth, targetHeight, gap, false);
+                row = [];
+                rowWidth = 0;
+            }
+        });
+
+        if (row.length) {
+            layoutRow(row, containerWidth, targetHeight, gap, true);
+        }
+
+        galleryEl.classList.add('js-ready');
+    }
+
+    let layoutScheduled = false;
+    function scheduleLayout() {
+        if (layoutScheduled) return;
+        layoutScheduled = true;
+        requestAnimationFrame(() => {
+            layoutScheduled = false;
+            layoutGallery();
+        });
+    }
+
+    // 预读所有图片的真实尺寸后再首次排布，避免比例未知导致的错误占位
+    Promise.all(Array.from(galleryItems).map(loadRatio)).then(() => {
+        layoutGallery();
+    });
+
+    // 窗口尺寸变化时按新的行高 / 容器宽度重新排布（做防抖）
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layoutGallery, 150);
+    });
 
     // 更新当前可见照片数量的方法
     function updatePhotoCount() {
@@ -1998,6 +2117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             updatePhotoCount();
+            layoutGallery(); // 可见图片集合变了，重新按真实比例排布
         });
     });
 

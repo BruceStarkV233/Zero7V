@@ -405,21 +405,28 @@ Optimized for 3D Artists, Game Artists, and Designers.
        ═══════════════════════════════════════════════════════════════ */
     .gallery {
       padding:         var(--space-section-gap) var(--space-page-x);
-      column-count:    var(--grid-columns-desktop);
-      column-gap:      var(--grid-column-gap);
+      display:         flex;
+      flex-flow:       row wrap;
+      align-content:   flex-start;
+      gap:             var(--grid-column-gap);
     }
 
-    @media (min-width: 1400px) { .gallery { column-count: var(--grid-columns-wide); } }
-    @media (max-width: 1100px) { .gallery { column-count: 3; } }
-    @media (max-width: 768px) {  .gallery { column-count: var(--grid-columns-tablet); } }
-    @media (max-width: 480px) {  .gallery { column-count: var(--grid-columns-mobile); } }
+    /* justified 排布：每张图片的 width/height 由 JS 依据真实像素比例算出，
+       并以内联样式写在 .gallery__item 上；这里只需要让 flex 不去二次拉伸它。 */
+    .gallery__item.js-justified {
+      flex:            0 0 auto;
+    }
+
+    /* JS 尚未完成计算前的兜底占位（避免布局跳动过于明显） */
+    .gallery:not(.js-ready) .gallery__item {
+      flex:            1 1 260px;
+      height:          260px;
+    }
 
     /* ── Gallery Item (ArtStation 工业化卡片底座) ──────────────── */
     .gallery__item {
       position:         relative;
       display:          block;
-      break-inside:     avoid;
-      margin-bottom:   var(--grid-item-margin-bottom);
       border-radius:   var(--grid-border-radius);
       overflow:         hidden;
       cursor:           pointer;
@@ -437,7 +444,8 @@ Optimized for 3D Artists, Game Artists, and Designers.
     /* ── 核心缩放 ── */
     .gallery__image {
       width:           100%;
-      height:          auto;
+      height:          100%;
+      object-fit:      cover; /* 容器尺寸已按真实比例算好，cover 只用于消除取整误差 */
       display:         block;
       transition:      var(--transition-image-scale);
       will-change:     transform;
