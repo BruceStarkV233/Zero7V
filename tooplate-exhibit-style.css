@@ -526,7 +526,7 @@ Optimized for 3D Artists, Game Artists, and Designers.
       transition:      var(--transition-lightbox);
     }
 
-    .lightbox.is-open { opacity: 1; pointer-events: all; }
+    .lightbox.lightbox--active { opacity: 1; pointer-events: all; }
 
     .lightbox__bar {
       display:         flex;
@@ -574,8 +574,8 @@ Optimized for 3D Artists, Game Artists, and Designers.
     @media (max-width: 560px) { .lightbox__stage { padding: 0 2rem; } }
 
     .lightbox__image {
-      max-width:       100%;
-      max-height:      100%;
+      max-width:       90%;
+      max-height:      80vh;
       object-fit:      contain;
       border-radius:   0; /* 完美还原无边框大图渲染 */
       box-shadow:      0 20px 60px rgba(0,0,0,0.8);

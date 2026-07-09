@@ -38,7 +38,7 @@
   三维设计师<br/><strong>崔博伟</strong>
 </h1>
 <div class="hero__meta">
-<span class="hero__count" id="js-photo-count">24 张照片</span>
+<span class="hero__count" id="js-photo-count">187 张照片</span>
 <div aria-hidden="true" class="hero__rule"></div>
 <p class="hero__desc">五年工作经验 —— 复合型三维设计师</p>
 </div>
@@ -1919,7 +1919,7 @@
 <div class="lightbox__header">
 <div class="lightbox__counter"><span id="js-lb-current">1</span> / <span id="js-lb-total">24</span></div>
 <button aria-label="Close lightbox" class="lightbox__close" id="js-lb-close">
-<svg stroke-linecap="round" stroke-linejoin='\"round\"' viewbox="0 0 24 24">
+<svg stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
 <path d="M18 6 6 18M6 6l12 12"></path>
 </svg>
 </button>
@@ -1958,6 +1958,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.classList.toggle('is-open');
+            mobileMenu.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
         });
     }
 
@@ -2073,10 +2074,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 预读所有图片的真实尺寸后再首次排布，避免比例未知导致的错误占位
-    Promise.all(Array.from(galleryItems).map(loadRatio)).then(() => {
+    // ─────────────────────────────────────────────────────────────
+    // 分批读取比例：只对首屏附近的图片立即探测真实尺寸；
+    // 其余图片改用 IntersectionObserver，滚动到附近时才读取，
+    // 避免一次性把 187 张图（含未生成缩略图的原图 GIF）全部下载，
+    // 这样才能真正发挥 <img loading="lazy"> 的懒加载效果。
+    // ─────────────────────────────────────────────────────────────
+    const EAGER_RATIO_COUNT = 40; // 覆盖首屏及稍往下一段，保证初始排布尽量精确
+    const allItemsArr = Array.from(galleryItems);
+    const eagerItems = allItemsArr.slice(0, EAGER_RATIO_COUNT);
+    const lazyItems = allItemsArr.slice(EAGER_RATIO_COUNT);
+
+    const ratioObserver = ('IntersectionObserver' in window)
+        ? new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                observer.unobserve(entry.target);
+                loadRatio(entry.target).then(() => scheduleLayout());
+            });
+        }, { rootMargin: '600px 0px' }) // 提前 600px 开始读取，减少滚动时的布局跳动
+        : null;
+
+    Promise.all(eagerItems.map(loadRatio)).then(() => {
         layoutGallery();
     });
+
+    if (ratioObserver) {
+        lazyItems.forEach((item) => ratioObserver.observe(item));
+    } else {
+        // 不支持 IntersectionObserver 的旧浏览器，退化为原来的一次性预读
+        Promise.all(lazyItems.map(loadRatio)).then(() => layoutGallery());
+    }
 
     // 窗口尺寸变化时按新的行高 / 容器宽度重新排布（做防抖）
     let resizeTimer = null;
@@ -2104,12 +2132,21 @@ document.addEventListener('DOMContentLoaded', () => {
             // 拿到当前被点击按钮的过滤器路径，如 "all"、"角色" 或 "角色/卡通角色"
             const filterValue = this.getAttribute('data-filter');
 
+            const newlyVisible = [];
+
             galleryItems.forEach(item => {
                 // 读取图片元素上配置的所有样式类，按空格拆分为数组
                 const itemCategories = (item.getAttribute('data-category') || '').split(' ');
 
                 // 🌟 核心修复：检查图片所属分类数组中是否包含当前按钮请求的路径
-                if (filterValue === 'all' || itemCategories.includes(filterValue)) {
+                const shouldShow = filterValue === 'all' || itemCategories.includes(filterValue);
+
+                if (shouldShow) {
+                    if (item.style.display === 'none' && !ratioCache.has(item)) {
+                        // display:none 的元素永远不会触发 IntersectionObserver，
+                        // 所以这里主动补一次比例读取，避免筛选后图片一直用占位尺寸
+                        newlyVisible.push(item);
+                    }
                     item.style.display = ''; // 恢复显示
                 } else {
                     item.style.display = 'none'; // 隐藏
@@ -2117,7 +2154,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             updatePhotoCount();
-            layoutGallery(); // 可见图片集合变了，重新按真实比例排布
+
+            if (newlyVisible.length) {
+                if (ratioObserver) newlyVisible.forEach(item => ratioObserver.unobserve(item));
+                Promise.all(newlyVisible.map(loadRatio)).then(() => layoutGallery());
+            }
+
+            layoutGallery(); // 可见图片集合变了，先用已有比例排布一次，稍后比例到位再刷新一遍
         });
     });
 
@@ -2197,22 +2240,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePhotoCount();
 });
 </script>
-<style>
-    .lightbox.lightbox--active {
-      opacity: 1 !important;
-      pointer-events: all !important;
-      background: rgba(10, 11, 12, 0.98) !important;
-    }
-    /* 确保大图居中且正常缩放 */
-    .lightbox__container {
-      position: fixed; inset: 0; display: flex; flex-direction: column; z-index: 9999;
-    }
-    #js-lb-image {
-      max-width: 90% !important;
-      max-height: 80vh !important;
-      object-fit: contain !important;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7) !important;
-    }
-  </style>
 </body>
 </html>
