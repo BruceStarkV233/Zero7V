@@ -76,6 +76,72 @@ Optimized for 3D Artists, Game Artists, and Designers.
     }
 
     /* ═══════════════════════════════════════════════════════════════
+       PRELOADER (首次进入 / 切换分类时的图片加载进度条)
+       ═══════════════════════════════════════════════════════════════ */
+    html.is-loading, body.is-loading {
+      overflow: hidden; /* 加载完成前禁止滚动，避免看到还没排好版的图片 */
+    }
+
+    .preloader {
+      position:        fixed;
+      inset:            0;
+      z-index:          5000; /* 高于 lightbox(1000) 和顶栏(200) */
+      display:          flex;
+      align-items:      center;
+      justify-content:  center;
+      background:       var(--color-page-background);
+      opacity:          1;
+      transition:       opacity 0.35s ease;
+    }
+
+    .preloader.preloader--done {
+      opacity:          0;
+      pointer-events:   none;
+    }
+
+    .preloader__inner {
+      width:            min(320px, 80vw);
+      text-align:       center;
+    }
+
+    .preloader__label {
+      font-size:        var(--font-size-label);
+      font-weight:      600;
+      letter-spacing:   var(--letter-spacing-wide);
+      text-transform:   uppercase;
+      color:            var(--color-text-secondary);
+      margin-bottom:    0.9rem;
+    }
+
+    .preloader__label span { color: var(--color-accent); font-weight: 700; }
+
+    .preloader__track {
+      width:            100%;
+      height:           2px;
+      background:       #26282b;
+      border-radius:    999px;
+      overflow:         hidden;
+    }
+
+    .preloader__bar {
+      width:            0%;
+      height:           100%;
+      background:       var(--color-accent);
+      border-radius:    999px;
+      transition:       width 0.2s ease;
+    }
+
+    .preloader__count {
+      margin-top:       0.75rem;
+      font-size:        0.7rem;
+      color:            var(--color-text-tertiary);
+      letter-spacing:   var(--letter-spacing-wide);
+    }
+
+    /* 分类切换时的轻量加载态：不整页遮罩，只让画廊区域给出反馈 */
+    .gallery.is-refiltering { opacity: 0.35; pointer-events: none; transition: opacity 0.15s ease; }
+
+    /* ═══════════════════════════════════════════════════════════════
        RESET & BASE (暗色模式视网膜重置)
        ═══════════════════════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html class="is-loading" lang="zh-CN">
 <head>
 <meta content="noindex, nofollow" name="robots"/>
 <meta charset="utf-8"/>
@@ -12,7 +12,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="tooplate-exhibit-style.css" rel="stylesheet"/>
 </head>
-<body>
+<body class="is-loading">
+<div aria-live="polite" class="preloader" id="js-preloader" role="status">
+<div class="preloader__inner">
+<p class="preloader__label">作品集加载中 <span id="js-preloader-percent">0%</span></p>
+<div class="preloader__track">
+<div class="preloader__bar" id="js-preloader-bar"></div>
+</div>
+<p class="preloader__count" id="js-preloader-count">0 / 0</p>
+</div>
+</div>
 <nav aria-label="Main" class="site-nav" role="navigation">
 <div class="nav__bar">
 <a class="nav__wordmark" href="index.html">CuiBoWei <span>/ ArtWork</span></a>
@@ -2064,47 +2073,57 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryEl.classList.add('js-ready');
     }
 
-    let layoutScheduled = false;
-    function scheduleLayout() {
-        if (layoutScheduled) return;
-        layoutScheduled = true;
-        requestAnimationFrame(() => {
-            layoutScheduled = false;
-            layoutGallery();
-        });
-    }
-
     // ─────────────────────────────────────────────────────────────
-    // 分批读取比例：只对首屏附近的图片立即探测真实尺寸；
-    // 其余图片改用 IntersectionObserver，滚动到附近时才读取，
-    // 避免一次性把 187 张图（含未生成缩略图的原图 GIF）全部下载，
-    // 这样才能真正发挥 <img loading="lazy"> 的懒加载效果。
+    // 首屏预加载：在读完全部作品的真实宽高比、完成第一次排版之前，
+    // 用全屏进度条挡住页面，避免用户看到图片"没有排好版"的过程。
+    // 分类切换同理：因为所有比例已经缓存过，通常是瞬间完成的，
+    // 但仍做一个轻量的过渡态，防止极端情况下（比例还没读完）露馅。
     // ─────────────────────────────────────────────────────────────
-    const EAGER_RATIO_COUNT = 40; // 覆盖首屏及稍往下一段，保证初始排布尽量精确
     const allItemsArr = Array.from(galleryItems);
-    const eagerItems = allItemsArr.slice(0, EAGER_RATIO_COUNT);
-    const lazyItems = allItemsArr.slice(EAGER_RATIO_COUNT);
+    const totalCount = allItemsArr.length;
 
-    const ratioObserver = ('IntersectionObserver' in window)
-        ? new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                observer.unobserve(entry.target);
-                loadRatio(entry.target).then(() => scheduleLayout());
-            });
-        }, { rootMargin: '600px 0px' }) // 提前 600px 开始读取，减少滚动时的布局跳动
-        : null;
+    const preloaderEl = document.getElementById('js-preloader');
+    const preloaderBar = document.getElementById('js-preloader-bar');
+    const preloaderPercent = document.getElementById('js-preloader-percent');
+    const preloaderCount = document.getElementById('js-preloader-count');
 
-    Promise.all(eagerItems.map(loadRatio)).then(() => {
-        layoutGallery();
-    });
-
-    if (ratioObserver) {
-        lazyItems.forEach((item) => ratioObserver.observe(item));
-    } else {
-        // 不支持 IntersectionObserver 的旧浏览器，退化为原来的一次性预读
-        Promise.all(lazyItems.map(loadRatio)).then(() => layoutGallery());
+    let loadedCount = 0;
+    function updatePreloaderProgress() {
+        const pct = totalCount ? Math.round((loadedCount / totalCount) * 100) : 100;
+        if (preloaderBar) preloaderBar.style.width = pct + '%';
+        if (preloaderPercent) preloaderPercent.textContent = pct + '%';
+        if (preloaderCount) preloaderCount.textContent = `${loadedCount} / ${totalCount}`;
     }
+
+    function hidePreloader() {
+        document.documentElement.classList.remove('is-loading');
+        document.body.classList.remove('is-loading');
+        if (preloaderEl) {
+            preloaderEl.classList.add('preloader--done');
+            preloaderEl.setAttribute('aria-hidden', 'true');
+            // 等淡出动画播完再彻底移出文档，避免残留元素挡住点击
+            setTimeout(() => preloaderEl.remove(), 400);
+        }
+    }
+
+    updatePreloaderProgress();
+
+    const ratioPromises = allItemsArr.map((item) =>
+        loadRatio(item).then((ratio) => {
+            loadedCount += 1;
+            updatePreloaderProgress();
+            return ratio;
+        })
+    );
+
+    // 兜底：极端情况下（例如个别图片资源一直不响应）最多等 8 秒就放行，
+    // 不能让进度条卡死导致用户永远进不了页面。
+    const preloadTimeout = new Promise((resolve) => setTimeout(resolve, 8000));
+
+    Promise.race([Promise.all(ratioPromises), preloadTimeout]).then(() => {
+        layoutGallery();
+        hidePreloader();
+    });
 
     // 窗口尺寸变化时按新的行高 / 容器宽度重新排布（做防抖）
     let resizeTimer = null;
@@ -2132,7 +2151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 拿到当前被点击按钮的过滤器路径，如 "all"、"角色" 或 "角色/卡通角色"
             const filterValue = this.getAttribute('data-filter');
 
-            const newlyVisible = [];
+            const pendingRatios = [];
 
             galleryItems.forEach(item => {
                 // 读取图片元素上配置的所有样式类，按空格拆分为数组
@@ -2142,11 +2161,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const shouldShow = filterValue === 'all' || itemCategories.includes(filterValue);
 
                 if (shouldShow) {
-                    if (item.style.display === 'none' && !ratioCache.has(item)) {
-                        // display:none 的元素永远不会触发 IntersectionObserver，
-                        // 所以这里主动补一次比例读取，避免筛选后图片一直用占位尺寸
-                        newlyVisible.push(item);
-                    }
+                    // 正常情况下首屏预加载阶段已经读完所有比例；这里只是兜底，
+                    // 防止某张图片当时加载失败、缓存里没有它的比例
+                    if (!ratioCache.has(item)) pendingRatios.push(item);
                     item.style.display = ''; // 恢复显示
                 } else {
                     item.style.display = 'none'; // 隐藏
@@ -2155,12 +2172,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             updatePhotoCount();
 
-            if (newlyVisible.length) {
-                if (ratioObserver) newlyVisible.forEach(item => ratioObserver.unobserve(item));
-                Promise.all(newlyVisible.map(loadRatio)).then(() => layoutGallery());
+            if (pendingRatios.length) {
+                // 有图片比例还没就绪：短暂给画廊一个"加载中"过渡态，避免露出占位排版
+                galleryEl.classList.add('is-refiltering');
+                Promise.all(pendingRatios.map(loadRatio)).then(() => {
+                    layoutGallery();
+                    galleryEl.classList.remove('is-refiltering');
+                });
+            } else {
+                layoutGallery(); // 所有比例都已缓存，直接按真实比例重新排布
             }
-
-            layoutGallery(); // 可见图片集合变了，先用已有比例排布一次，稍后比例到位再刷新一遍
         });
     });
 
